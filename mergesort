@@ -1,0 +1,50 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+void mergesort(int list[], int left, int right);
+void merge(int list[],int left,int mid,int right);
+int* sorted;
+int main(void) {
+	int N;
+	scanf("%d", &N);
+	int* pi;
+	pi = (int*)malloc(sizeof(int)*N);
+	for (int i = 0; i < N; i++) {
+		scanf("%d", &pi[i]);
+	}sorted = (int*)malloc(sizeof(int) * N);
+	mergesort(pi, 0, N - 1);
+	for (int i = 0; i < N; i++) {
+		printf("%d\n", pi[N-i-1]);
+	}free(pi);
+	free(sorted);
+	return 0;
+}void merge(int list[], int left, int mid, int right) {
+	int i, j, k;
+	i = left;
+	j = mid + 1;
+	k = left;
+	while (i <= mid && j <= right) {
+		if (list[i] <= list[j])
+			sorted[k++] = list[i++];
+		else
+			sorted[k++] = list[j++];
+	}if (i > mid) {
+		for (int t = j; t <= right; t++) {
+			sorted[k++] = list[t];
+		}
+	}
+	else {
+		for (int t = i; t <= mid; t++) {
+			sorted[k++] = list[t];
+		}
+	}for (int t = left; t <= right; t++) {
+		list[t] = sorted[t];
+	}
+}void mergesort(int list[], int left, int right) {
+	if (left < right) {
+		int mid = (left + right) / 2;
+		mergesort(list, left, mid);
+		mergesort(list, mid + 1, right);
+		merge(list, left, mid, right);
+	}
+}
